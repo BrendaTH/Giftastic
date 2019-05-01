@@ -4,45 +4,62 @@
 //***************** */
 // globals
 //***************** */
-
+var theContainer = document.querySelector(".container");
+var giphyInfoLocation = document.getElementById('giphy-data');
 //***************** */
 // objects
 //***************** */
 var giftastic = {
-    topics: ['cat', 'dog', 'bird', 'simpsons'],
-    parentButton: $('<div id="button-parent">'),
+    topics: ['lisa simpson', 'bart simpson', 'marge simpson', 'maggie simpson', 'simpsons'],
 
     initButtons: function() {
         // hang the parent button off of the body
         // prepend to ensure the buttons are at the top of the page
-        $('.container').prepend(this.parentButton);
+        var divNode = document.createElement('div');
+        divNode.setAttribute('id', 'button-parent');
+        giphyInfoLocation.appendChild(divNode);
         this.renderButtons();
     },
 
     initForm: function() {
-        var newButtonForm = $('<form id="new-button-form">');
-        $('.container').append(newButtonForm);
-     
-        var newLabel = $('<label for="new-button-input">').text('Add a Button: ');
-        $('#new-button-form').append(newLabel);
-        var newInput = $('<input type="text" id="new-button-input" value="enter new button name">')
-        $('#new-button-form').append(newInput);
-        $('#new-button-form').append('<br>');
-        newInput = $('<input id="add-new-button" type="submit" value="Add a Button, Yo!">')
-        $('#new-button-form').append(newInput);
+        var newButtonForm = document.createElement('form');
+        newButtonForm.setAttribute('id', 'new-button-form');
+        giphyInfoLocation.appendChild(newButtonForm);
+
+        var newLabel = document.createElement('label');
+        newLabel.setAttribute('for', 'new-button-input');
+        newLabel.textContent = 'Add a Button: ';
+        newButtonForm.appendChild(newLabel);
+
+        var newInput = document.createElement('input');
+        newInput.setAttribute('type', 'text');
+        newInput.setAttribute('id', 'new-button-input');
+        newInput.setAttribute('value', 'enter new button name');
+        newButtonForm.appendChild(newInput);
+
+        newButtonForm.appendChild(document.createElement('br'));
+
+        // var newInputButton = document.createElement('input');
+        var newInputButton = document.createElement('input');
+        newInputButton.setAttribute('id', 'add-new-button');
+        newInputButton.setAttribute('type', 'submit');
+        newInputButton.setAttribute('value', 'Add a Button, Doh!');
+        newButtonForm.appendChild(newInputButton);
     },
 
     initGifArea: function() {
-        var parentDivGif =  $('<div id="gifs-appear-here">');
-        $('.container').append(parentDivGif);
+        var parentDivGif = document.createElement('div');
+        parentDivGif.setAttribute('id', 'gifs-appear-here');
+        giphyInfoLocation.appendChild(parentDivGif);
     },
 
     createAndAppendNewButton: function(newButtonName) {
         // create a button
-        var newButton = $('<button class="button" data-name="' + newButtonName + '">').text(newButtonName);
-        // append it to the parent at end of the current buttons
-        console.log(this);
-        this.parentButton.append(newButton);
+        var newButton = document.createElement('button');
+        newButton.setAttribute('class', 'button');
+        newButton.setAttribute('data-name', newButtonName);
+        newButton.textContent = newButtonName;
+        document.getElementById('button-parent').appendChild(newButton);
     },
 
     // Function for displaying buttons
@@ -57,7 +74,10 @@ var giftastic = {
         // add this name to button array
         this.topics.push(newButtonName);
         // remove old buttons
-        $('#button-parent').empty();
+        var btnParent = document.getElementById('button-parent');
+        while (btnParent.firstChild) {
+            btnParent.removeChild(btnParent.firstChild);
+        }
         // create new buttons
         this.renderButtons();
     },
@@ -65,10 +85,12 @@ var giftastic = {
 
     // builds the query, sends it, processes and displays the results
     queryAPI: function(themeName) {
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        themeName + "&api_key=21pbXpSdx68vgJpuoB7wb0uQgVGGuGUg&limit=10&rating=g";
-        //ubKLULw8MPJOnOQYC2FNHPGL4EWJLq64
+        var characterStr = themeName.split(" ").join("+");
 
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        characterStr + "&api_key=21pbXpSdx68vgJpuoB7wb0uQgVGGuGUg&limit=10&rating=g";
+        //ubKLULw8MPJOnOQYC2FNHPGL4EWJLq64
+        console.log("queryURL: " + queryURL);
         $.ajax({
         url: queryURL,
         method: "GET"
