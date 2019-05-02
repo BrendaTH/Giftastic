@@ -4,15 +4,20 @@
 //***************** */
 // globals
 //***************** */
-var theContainer = document.querySelector(".container");
 var giphyInfoLocation = document.getElementById('giphy-data');
 //***************** */
 // objects
 //***************** */
 var giftastic = {
-    topics: ['lisa simpson', 'bart simpson', 'marge simpson', 'maggie simpson', 'simpsons'],
-
+    topics: ['lisa simpson', 'bart simpson', 'marge simpson', 'maggie simpson', 'ned flanders', 'homer simpson', 'krusty the clown', 'simpsons'],
+    newInputValue: 'enter your own character here',
     initButtons: function() {
+        // create instructions for buttons and form
+        var instructionNode = document.createElement('p');
+        instructionNode.textContent = 'Click on a conveniently, already made button, ' 
+                + 'or create your own button with your favorite character!';
+        giphyInfoLocation.appendChild(instructionNode);
+
         // hang the parent button off of the body
         // prepend to ensure the buttons are at the top of the page
         var divNode = document.createElement('div');
@@ -22,41 +27,66 @@ var giftastic = {
     },
 
     initForm: function() {
+        // <form id='new-button-form'>
         var newButtonForm = document.createElement('form');
         newButtonForm.setAttribute('id', 'new-button-form');
         giphyInfoLocation.appendChild(newButtonForm);
 
+        // <div class='form-group'>
+        var divGroup = document.createElement('div');
+        divGroup.className = 'form-group';
+        newButtonForm.appendChild(divGroup);
+
+        // <label for='new-button-input'>More characters: 
         var newLabel = document.createElement('label');
         newLabel.setAttribute('for', 'new-button-input');
-        newLabel.textContent = 'Add a Button: ';
-        newButtonForm.appendChild(newLabel);
+        newLabel.textContent = 'More characters: ';
+        divGroup.appendChild(newLabel);
 
+        // <input type='text' id='new-button-input' class='form-control'/>
         var newInput = document.createElement('input');
         newInput.setAttribute('type', 'text');
         newInput.setAttribute('id', 'new-button-input');
-        newInput.setAttribute('value', 'enter new button name');
-        newButtonForm.appendChild(newInput);
+        newInput.className = 'form-control bg-primary text-light input-fields';
 
-        newButtonForm.appendChild(document.createElement('br'));
+        newInput.setAttribute('onfocus', "this.value=''");
+        newInput.setAttribute('value', this.newInputValue);
+        newInput.setAttribute('data-toggle', 'tooltip');
+        newInput.setAttribute('data-placement', 'top');
+        newInput.setAttribute('title', 'Input your own favorite character here');
+        divGroup.appendChild(newInput);
 
-        // var newInputButton = document.createElement('input');
+        // <input type='submit' class='form-control' id='add-new-button' value='Submit here, Doh!/>
         var newInputButton = document.createElement('input');
-        newInputButton.setAttribute('id', 'add-new-button');
         newInputButton.setAttribute('type', 'submit');
-        newInputButton.setAttribute('value', 'Add a Button, Doh!');
-        newButtonForm.appendChild(newInputButton);
+        newInputButton.className = 'form-control bg-primary text-light input-fields';
+        newInputButton.setAttribute('id', 'add-new-button');
+        newInputButton.setAttribute('value', 'Submit here, Doh!');
+        divGroup.appendChild(newInputButton);
     },
 
     initGifArea: function() {
+        // create the parent div for the gifs
         var parentDivGif = document.createElement('div');
-        parentDivGif.setAttribute('id', 'gifs-appear-here');
+        parentDivGif.className = 'container text-muted';
+        
+        // create the row div for the gifs
+        var rowDivGif = document.createElement('div');
+        rowDivGif.setAttribute('id', 'gifs-appear-here');
+        rowDivGif.setAttribute('class', 'row');
+        // append the row to the parent
+        parentDivGif.appendChild(rowDivGif);
+        // append the parent to the giphy area
         giphyInfoLocation.appendChild(parentDivGif);
+
     },
 
     createAndAppendNewButton: function(newButtonName) {
         // create a button
         var newButton = document.createElement('button');
-        newButton.setAttribute('class', 'button');
+        newButton.setAttribute('type', 'button');
+        newButton.className = 'button btn btn-primary';
+        
         newButton.setAttribute('data-name', newButtonName);
         newButton.textContent = newButtonName;
         document.getElementById('button-parent').appendChild(newButton);
@@ -88,8 +118,8 @@ var giftastic = {
         var characterStr = themeName.split(" ").join("+");
 
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        characterStr + "&api_key=21pbXpSdx68vgJpuoB7wb0uQgVGGuGUg&limit=10&rating=g";
-        //ubKLULw8MPJOnOQYC2FNHPGL4EWJLq64
+        characterStr + "&api_key=21pbXpSdx68vgJpuoB7wb0uQgVGGuGUg&limit=10";
+        //ubKLULw8MPJOnOQYC2FNHPGL4EWJLq64  (try this key if the other one fails )
         console.log("queryURL: " + queryURL);
         $.ajax({
         url: queryURL,
@@ -101,28 +131,38 @@ var giftastic = {
 
             // go thru each gif
             for (var i = 0; i < results.length; i++) {
+                // h3 <== title text
+                var title = document.createTextNode("Title: " + results[i].title);
+                var headerTitle = document.createElement('h3');
+                headerTitle.setAttribute('class', 'card-title');
+                headerTitle.appendChild(title);
 
-                var rating = results[i].rating;
-                var title = results[i].title;
-                var p = $('<p id="gif-info">').text('Title: ' + title + ' Rating: ' + rating);
-                p.append('<br><br>');
+                // p <== rating text
+                var rating = document.createTextNode("Rating: " + results[i].rating);
+                var headerPara = document.createElement('p');
+                headerPara.appendChild(rating);
+
+                var gifBlock = document.createElement('div');
+                gifBlock.className = 'card-block border border-primary';
+                gifBlock.append(headerTitle);
+                gifBlock.append(headerPara);
 
 
-                var gifDiv = $("<div>");
-                var themeImage = $("<img>");
-                themeImage.attr("src", results[i].images.fixed_height.url);
-                themeImage.attr("alt", themeName + ' ' + title);
+                var themeImage = document.createElement('img');
+                themeImage.setAttribute('src', results[i].images.fixed_height.url);
+                themeImage.className = 'card-image-top img-fluid';
 
-                gifDiv.prepend(themeImage);
-                gifDiv.append(p);
+                var gifColumn = document.createElement('div');
+                gifColumn.className = 'col-md-3';
+                gifColumn.append(themeImage);
+                gifColumn.append(gifBlock);
 
-                $("#gifs-appear-here").prepend(gifDiv);
+                $("#gifs-appear-here").prepend(gifColumn);
             }
       });
     },
 
 };
-
 
 //***************** */
 // run this code when we load the page
@@ -142,10 +182,10 @@ $(document).ready(function() {
 
         // grab the text and clear the input field
         var inputButtonName = $('#new-button-input').val();
-        $('#new-button-input').val("");
         // add the new button to the list
-        if (inputButtonName) {
+        if (inputButtonName && inputButtonName !== giftastic.newInputValue) {
             giftastic.addNewButton(inputButtonName);
+            $('#new-button-input').val("");
         }
     });
 
