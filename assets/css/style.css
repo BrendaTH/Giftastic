@@ -10,15 +10,15 @@
     /* background-position: center top; */
     background-position: center bottom;
 }
-.jumbotron-header {
-    font-family: 'Rock Salt', cursive;
-}
 form {
     width: 500px;
     margin: auto;
 }
 label {
     margin: 20px 0px 8px;
+}
+.rock-salt {
+    font-family: 'Rock Salt', cursive;
 }
 input {
     margin: 0px 0px 8px;

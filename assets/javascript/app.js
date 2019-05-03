@@ -14,6 +14,7 @@ var giftastic = {
     initButtons: function() {
         // create instructions for buttons and form
         var instructionNode = document.createElement('p');
+        instructionNode.className = 'rock-salt text-primary';
         instructionNode.textContent = 'Click on a conveniently, already made button, ' 
                 + 'or create your own button with your favorite character!';
         giphyInfoLocation.appendChild(instructionNode);
@@ -40,6 +41,7 @@ var giftastic = {
         // <label for='new-button-input'>More characters: 
         var newLabel = document.createElement('label');
         newLabel.setAttribute('for', 'new-button-input');
+        newLabel.className = 'rock-salt text-primary';
         newLabel.textContent = 'More characters: ';
         divGroup.appendChild(newLabel);
 
@@ -131,19 +133,18 @@ var giftastic = {
 
             // go thru each gif
             for (var i = 0; i < results.length; i++) {
-                // h3 <== title text
-                var title = document.createTextNode("Title: " + results[i].title);
-                var headerTitle = document.createElement('p');
-                headerTitle.appendChild(title);
-
-                // p <== rating text
-                var rating = document.createTextNode("Rating: " + results[i].rating);
+                var titleHtml = '<b>Title: </b>' + results[i].title;
+                var brk = document.createElement('br');
+                var ratingHtml = '<b>Rating: </b>' + results[i].rating;
+                var anotherBrk = document.createElement('br');
+                var charHtml = '<b>Character: </b>' + themeName;
                 var headerPara = document.createElement('p');
-                headerPara.appendChild(rating);
+                $(headerPara).append(titleHtml, brk, ratingHtml, anotherBrk, charHtml);
+
 
                 var gifBlock = document.createElement('div');
                 gifBlock.className = 'card-block';
-                gifBlock.append(headerTitle);
+                // gifBlock.append(headerTitle);
                 gifBlock.append(headerPara);
 
 
