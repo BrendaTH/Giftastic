@@ -73,7 +73,7 @@ var giftastic = {
         // create the row div for the gifs
         var rowDivGif = document.createElement('div');
         rowDivGif.setAttribute('id', 'gifs-appear-here');
-        rowDivGif.setAttribute('class', 'row');
+        rowDivGif.setAttribute('class', 'flex-row');
         // append the row to the parent
         parentDivGif.appendChild(rowDivGif);
         // append the parent to the giphy area
@@ -133,8 +133,7 @@ var giftastic = {
             for (var i = 0; i < results.length; i++) {
                 // h3 <== title text
                 var title = document.createTextNode("Title: " + results[i].title);
-                var headerTitle = document.createElement('h3');
-                headerTitle.setAttribute('class', 'card-title');
+                var headerTitle = document.createElement('p');
                 headerTitle.appendChild(title);
 
                 // p <== rating text
@@ -143,7 +142,7 @@ var giftastic = {
                 headerPara.appendChild(rating);
 
                 var gifBlock = document.createElement('div');
-                gifBlock.className = 'card-block border border-primary';
+                gifBlock.className = 'card-block';
                 gifBlock.append(headerTitle);
                 gifBlock.append(headerPara);
 
@@ -153,7 +152,6 @@ var giftastic = {
                 themeImage.className = 'card-image-top img-fluid';
 
                 var gifColumn = document.createElement('div');
-                gifColumn.className = 'col-md-3';
                 gifColumn.append(themeImage);
                 gifColumn.append(gifBlock);
 
