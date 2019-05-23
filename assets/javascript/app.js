@@ -87,7 +87,7 @@ var giftastic = {
         // create a button
         var newButton = document.createElement('button');
         newButton.setAttribute('type', 'button');
-        newButton.className = 'button btn btn-primary';
+        newButton.className = 'button btn btn-primary btn-lg';
         
         newButton.setAttribute('data-name', newButtonName);
         newButton.textContent = newButtonName;
