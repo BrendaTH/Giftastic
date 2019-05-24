@@ -20,6 +20,9 @@ label {
 .rock-salt {
     font-family: 'Rock Salt', cursive;
 }
+.text-instruction, .gif-fonts {
+    font-size: 1.5rem;
+}
 input {
     margin: 0px 0px 8px;
 }

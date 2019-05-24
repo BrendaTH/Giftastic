@@ -14,7 +14,7 @@ var giftastic = {
     initButtons: function() {
         // create instructions for buttons and form
         var instructionNode = document.createElement('p');
-        instructionNode.className = 'rock-salt text-primary';
+        instructionNode.className = 'rock-salt text-primary text-instruction';
         instructionNode.textContent = 'Click on a conveniently, already made button, ' 
                 + 'or create your own button with your favorite character!';
         giphyInfoLocation.appendChild(instructionNode);
@@ -41,7 +41,7 @@ var giftastic = {
         // <label for='new-button-input'>More characters: 
         var newLabel = document.createElement('label');
         newLabel.setAttribute('for', 'new-button-input');
-        newLabel.className = 'rock-salt text-primary';
+        newLabel.className = 'rock-salt text-primary text-instruction';
         newLabel.textContent = 'More characters: ';
         divGroup.appendChild(newLabel);
 
@@ -143,7 +143,7 @@ var giftastic = {
 
 
                 var gifBlock = document.createElement('div');
-                gifBlock.className = 'card-block';
+                gifBlock.className = 'card-block gif-fonts';
                 // gifBlock.append(headerTitle);
                 gifBlock.append(headerPara);
 
